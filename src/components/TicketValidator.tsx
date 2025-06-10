@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, XCircle, Scan, Search, AlertTriangle, LogOut, Camera } from "lucide-react";
+import { CheckCircle, XCircle, Scan, Search, AlertTriangle, LogOut, Camera, QrCode } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Html5Qrcode } from "html5-qrcode";
@@ -174,13 +174,13 @@ const TicketValidator = ({ validator, tickets, onTicketValidated, onLogout }: Ti
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "valid":
-        return <CheckCircle className="w-12 h-12 text-green-400" />;
+        return <CheckCircle className="w-16 h-16 text-green-400" />;
       case "used":
-        return <AlertTriangle className="w-12 h-12 text-yellow-400" />;
+        return <AlertTriangle className="w-16 h-16 text-yellow-400" />;
       case "invalid":
-        return <XCircle className="w-12 h-12 text-red-400" />;
+        return <XCircle className="w-16 h-16 text-red-400" />;
       default:
-        return <Scan className="w-12 h-12 text-white/50" />;
+        return <Scan className="w-16 h-16 text-white/50" />;
     }
   };
 
@@ -198,47 +198,56 @@ const TicketValidator = ({ validator, tickets, onTicketValidated, onLogout }: Ti
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-            <Scan className="w-6 h-6 text-blue-400" />
-            Validador de Entradas
-          </h2>
-          <p className="text-white/70">
-            Validador: {validator.name} ({validator.code})
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <img 
+              src="/image.png" 
+              alt="EDHEX Logo" 
+              className="w-12 h-12 logo-glow"
+            />
+            <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+              <Scan className="w-8 h-8 text-purple-300" />
+              Validador de Entradas
+            </h2>
+          </div>
+          <p className="text-white/80 text-lg">
+            Validador: <span className="font-semibold text-purple-300">{validator.name}</span> ({validator.code})
           </p>
         </div>
         <Button
           onClick={onLogout}
-          variant="outline"
-          className="bg-black text-white border-gray-400 hover:bg-gray-900 hover:text-white"
+          className="btn-outline"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Salir
         </Button>
       </div>
 
-      <Card className="glass-card p-6">
-        <div className="space-y-4">
+      <Card className="glass-card p-8">
+        <div className="space-y-6">
           <div>
-            <Label htmlFor="code" className="text-white font-medium">
+            <Label htmlFor="code" className="text-white font-medium text-lg mb-3 block">
               Código de Entrada
             </Label>
-            <div className="flex gap-3 mt-2">
-              <Input
-                id="code"
-                value={searchCode}
-                onChange={(e) => setSearchCode(e.target.value.toUpperCase())}
-                placeholder="Escanea el QR o ingresa el código"
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 font-mono text-lg"
-                onKeyPress={(e) => e.key === 'Enter' && validateTicket()}
-              />
+            <div className="flex gap-4">
+              <div className="flex-1 relative">
+                <QrCode className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" />
+                <Input
+                  id="code"
+                  value={searchCode}
+                  onChange={(e) => setSearchCode(e.target.value.toUpperCase())}
+                  placeholder="Escanea el QR o ingresa el código"
+                  className="input-primary pl-12 text-lg h-14 font-mono"
+                  onKeyPress={(e) => e.key === 'Enter' && validateTicket()}
+                />
+              </div>
               <Button
                 onClick={validateTicket}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 px-6"
+                className="btn-primary h-14 px-8"
               >
-                <Search className="w-4 h-4 mr-2" />
+                <Search className="w-5 h-5 mr-2" />
                 Validar
               </Button>
             </div>
@@ -247,10 +256,10 @@ const TicketValidator = ({ validator, tickets, onTicketValidated, onLogout }: Ti
           <div className="flex justify-center">
             <Button
               variant="outline"
-              className="border-gray-400 bg-white text-black hover:bg-gray-100 hover:text-black"
+              className="bg-gradient-to-r from-purple-500/20 to-purple-400/20 border-2 border-purple-400 text-purple-200 hover:bg-purple-400 hover:text-purple-900 font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg"
               onClick={() => setShowScanner(true)}
             >
-              <Camera className="w-4 h-4 mr-2" />
+              <Camera className="w-5 h-5 mr-3" />
               Escanear QR
             </Button>
           </div>
@@ -258,65 +267,89 @@ const TicketValidator = ({ validator, tickets, onTicketValidated, onLogout }: Ti
       </Card>
 
       {showScanner && (
-        <div className="flex flex-col items-center mt-4">
-          <div id="qr-reader" ref={scannerRef} style={{ width: 320, height: 320 }} />
-          <Button
-            onClick={async () => {
-              setShowScanner(false);
-              if (html5QrRef.current) {
-                try {
-                  if (html5QrRef.current.isScanning) {
-                    await html5QrRef.current.stop();
+        <Card className="glass-card p-8">
+          <div className="text-center space-y-6">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              📱 Escáner QR
+            </h3>
+            <p className="text-white/80 mb-6">
+              Apunta la cámara hacia el código QR de la entrada
+            </p>
+            
+            <div className="flex justify-center">
+              <div className="scanner-overlay scanner-corners p-4 max-w-sm mx-auto">
+                <div 
+                  id="qr-reader" 
+                  ref={scannerRef} 
+                  className="w-full h-80 rounded-xl overflow-hidden"
+                />
+              </div>
+            </div>
+            
+            <Button
+              onClick={async () => {
+                setShowScanner(false);
+                if (html5QrRef.current) {
+                  try {
+                    if (html5QrRef.current.isScanning) {
+                      await html5QrRef.current.stop();
+                    }
+                    await html5QrRef.current.clear();
+                  } catch (e) {
+                    // Ignorar errores de limpieza
                   }
-                  await html5QrRef.current.clear();
-                } catch (e) {
-                  // Ignorar errores de limpieza
                 }
-              }
-            }}
-            className="mt-4 bg-red-500 text-white"
-          >
-            Cerrar
-          </Button>
-        </div>
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            >
+              Cerrar Escáner
+            </Button>
+          </div>
+        </Card>
       )}
 
       {/* Validation Result */}
       {validationResult && (
-        <Card className={`bg-gradient-to-br ${getStatusColor(validationResult.status)} p-6 text-white shadow-2xl animate-pulse`}>
-          <div className="text-center space-y-4">
-            {getStatusIcon(validationResult.status)}
+        <Card className={`bg-gradient-to-br ${getStatusColor(validationResult.status)} p-8 text-white shadow-2xl animate-pulse-slow border-0`}>
+          <div className="text-center space-y-6">
+            <div className="flex justify-center">
+              {getStatusIcon(validationResult.status)}
+            </div>
             
             <div>
-              <h3 className="text-3xl font-bold mb-2">{validationResult.message}</h3>
-              <p className="opacity-90 mb-4 text-lg">{validationResult.details}</p>
+              <h3 className="text-4xl font-bold mb-3">{validationResult.message}</h3>
+              <p className="opacity-90 mb-6 text-xl">{validationResult.details}</p>
             </div>
 
             {validationResult.ticket && (
-              <div className="bg-black/20 rounded-lg p-4 text-left">
-                <h4 className="font-semibold mb-3 text-lg">Detalles de la Entrada:</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="opacity-70">Graduando:</span>
-                    <p className="font-medium">{validationResult.ticket.studentName}</p>
+              <div className="bg-black/20 rounded-xl p-6 text-left max-w-2xl mx-auto">
+                <h4 className="font-semibold mb-4 text-xl text-center">📋 Detalles de la Entrada</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-base">
+                  <div className="space-y-3">
+                    <div>
+                      <span className="opacity-70 block text-sm">Graduando:</span>
+                      <p className="font-medium text-lg">{validationResult.ticket.studentName}</p>
+                    </div>
+                    <div>
+                      <span className="opacity-70 block text-sm">Invitado:</span>
+                      <p className="font-medium text-lg">{validationResult.ticket.guestName}</p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="opacity-70">Invitado:</span>
-                    <p className="font-medium">{validationResult.ticket.guestName}</p>
-                  </div>
-                  <div>
-                    <span className="opacity-70">Tipo:</span>
-                    <p className="font-medium capitalize">{validationResult.ticket.ticketType}</p>
-                  </div>
-                  <div>
-                    <span className="opacity-70">Código:</span>
-                    <p className="font-medium font-mono">{validationResult.ticket.code}</p>
+                  <div className="space-y-3">
+                    <div>
+                      <span className="opacity-70 block text-sm">Tipo:</span>
+                      <p className="font-medium text-lg capitalize">{validationResult.ticket.ticketType}</p>
+                    </div>
+                    <div>
+                      <span className="opacity-70 block text-sm">Código:</span>
+                      <p className="font-medium font-mono text-lg">{validationResult.ticket.code}</p>
+                    </div>
                   </div>
                 </div>
                 
                 {validationResult.ticket.specialNotes && (
-                  <div className="mt-3 pt-3 border-t border-white/20">
-                    <span className="opacity-70">Notas especiales:</span>
+                  <div className="mt-6 pt-4 border-t border-white/20">
+                    <span className="opacity-70 block text-sm mb-2">Notas especiales:</span>
                     <p className="font-medium">{validationResult.ticket.specialNotes}</p>
                   </div>
                 )}
@@ -327,20 +360,29 @@ const TicketValidator = ({ validator, tickets, onTicketValidated, onLogout }: Ti
       )}
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <Card className="glass-card p-4 text-center">
-          <h4 className="text-white font-medium">Total Entradas</h4>
-          <p className="text-2xl font-bold text-yellow-400">{tickets.length}</p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="glass-card p-6 text-center card-hover">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+            <Ticket className="w-6 h-6 text-white" />
+          </div>
+          <h4 className="text-white font-medium text-lg mb-1">Total Entradas</h4>
+          <p className="text-3xl font-bold text-purple-300">{tickets.length}</p>
         </Card>
         
-        <Card className="glass-card p-4 text-center">
-          <h4 className="text-white font-medium">Usadas</h4>
-          <p className="text-2xl font-bold text-green-400">{tickets.filter(t => t.used).length}</p>
+        <Card className="glass-card p-6 text-center card-hover">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+            <CheckCircle className="w-6 h-6 text-white" />
+          </div>
+          <h4 className="text-white font-medium text-lg mb-1">Usadas</h4>
+          <p className="text-3xl font-bold text-green-400">{tickets.filter(t => t.used).length}</p>
         </Card>
         
-        <Card className="glass-card p-4 text-center">
-          <h4 className="text-white font-medium">Disponibles</h4>
-          <p className="text-2xl font-bold text-blue-400">{tickets.filter(t => !t.used).length}</p>
+        <Card className="glass-card p-6 text-center card-hover">
+          <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+            <Scan className="w-6 h-6 text-white" />
+          </div>
+          <h4 className="text-white font-medium text-lg mb-1">Disponibles</h4>
+          <p className="text-3xl font-bold text-blue-400">{tickets.filter(t => !t.used).length}</p>
         </Card>
       </div>
     </div>

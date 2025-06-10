@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap, Shield, Ticket, Scan, Users, UserCheck } from "lucide-react";
+import { GraduationCap, Shield, Ticket, Scan, Users, UserCheck, Sparkles, Star } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import StudentLogin from "@/components/StudentLogin";
@@ -81,7 +81,18 @@ const Index = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white text-xl">Cargando sistema...</div>
+        <div className="glass-card p-8 rounded-2xl">
+          <div className="flex items-center space-x-4">
+            <div className="logo-container">
+              <img 
+                src="/image.png" 
+                alt="EDHEX Logo" 
+                className="w-12 h-12 logo-glow animate-pulse-slow"
+              />
+            </div>
+            <div className="text-white/90 text-xl font-semibold">Cargando sistema...</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -90,58 +101,97 @@ const Index = () => {
   if (!currentUser) {
     return (
       <div className="min-h-screen p-4 md:p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="glass-card rounded-3xl p-8 mb-8 animate-float">
-              <GraduationCap className="w-16 h-16 mx-auto mb-4 text-yellow-400" />
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-                EDHEX ENTRADAS
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                  Graduación Digital
-                </span>
-              </h1>
-              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
-                Entradas digitales únicas e imposibles de falsificar 🎓✨
-              </p>
+          <div className="text-center mb-16">
+            <div className="glass-card rounded-3xl p-12 mb-8 animate-float relative overflow-hidden">
+              {/* Background decoration */}
+              <div className="absolute top-0 left-0 w-full h-full opacity-10">
+                <div className="absolute top-4 right-4 w-32 h-32 rounded-full border-2 border-white animate-pulse-slow"></div>
+                <div className="absolute bottom-4 left-4 w-24 h-24 rounded-full border-2 border-white animate-bounce-slow"></div>
+                <Sparkles className="absolute top-1/2 left-1/4 w-6 h-6 text-white animate-pulse" />
+                <Star className="absolute top-1/4 right-1/3 w-4 h-4 text-white animate-pulse" />
+              </div>
+              
+              <div className="relative z-10">
+                <div className="logo-container mb-6">
+                  <img 
+                    src="/image.png" 
+                    alt="EDHEX Logo" 
+                    className="w-24 h-24 mx-auto logo-glow animate-float"
+                  />
+                </div>
+                
+                <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                  EDHEX
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-200 to-white text-4xl md:text-6xl mt-2">
+                    Entradas Digitales
+                  </span>
+                </h1>
+                
+                <div className="flex items-center justify-center space-x-2 mb-6">
+                  <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-purple-300"></div>
+                  <GraduationCap className="w-8 h-8 text-purple-300" />
+                  <div className="w-12 h-0.5 bg-gradient-to-l from-transparent to-purple-300"></div>
+                </div>
+                
+                <p className="text-white/80 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
+                  Sistema de entradas digitales seguras e imposibles de falsificar
+                  <span className="block text-purple-200 text-lg mt-2">
+                    ✨ Tecnología blockchain • 🔒 Códigos únicos • 📱 Validación instantánea
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Login Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
             {/* Student Login */}
-            <Card className="glass-card p-8 text-center">
-              <Users className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
-              <h2 className="text-2xl font-bold text-white mb-4">Soy Graduando</h2>
-              <p className="text-white/70 mb-6">
-                Genera hasta 5 entradas digitales para tu familia
-              </p>
-              <Button
-                onClick={() => setUserType('student')}
-                className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
-              >
-                Acceder como Graduando
-              </Button>
+            <Card className="glass-card p-8 text-center card-hover group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-300/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center shadow-xl">
+                  <Users className="w-10 h-10 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Soy Graduando</h2>
+                <p className="text-white/70 mb-8 text-lg leading-relaxed">
+                  Genera hasta 5 entradas digitales únicas para tu familia y amigos
+                </p>
+                <Button
+                  onClick={() => setUserType('student')}
+                  className="w-full btn-primary text-lg py-4"
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Acceder como Graduando
+                </Button>
+              </div>
             </Card>
 
             {/* Validator Login */}
-            <Card className="glass-card p-8 text-center">
-              <UserCheck className="w-12 h-12 mx-auto mb-4 text-blue-400" />
-              <h2 className="text-2xl font-bold text-white mb-4">Soy Validador</h2>
-              <p className="text-white/70 mb-6">
-                Valida entradas escaneando códigos QR
-              </p>
-              <Button
-                onClick={() => setUserType('validator')}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
-              >
-                Acceder como Validador
-              </Button>
+            <Card className="glass-card p-8 text-center card-hover group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative z-10">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center shadow-xl">
+                  <UserCheck className="w-10 h-10 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">Soy Validador</h2>
+                <p className="text-white/70 mb-8 text-lg leading-relaxed">
+                  Valida entradas escaneando códigos QR de forma segura
+                </p>
+                <Button
+                  onClick={() => setUserType('validator')}
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg"
+                >
+                  <Shield className="w-5 h-5 mr-2" />
+                  Acceder como Validador
+                </Button>
+              </div>
             </Card>
           </div>
 
           {/* Login Form */}
-          <div className="mt-12">
+          <div className="max-w-md mx-auto">
             {userType === 'student' && (
               <StudentLogin onLogin={(user) => handleLogin(user, 'student')} />
             )}
@@ -152,14 +202,41 @@ const Index = () => {
 
           {/* Back Button */}
           {userType && (
-            <div className="text-center mt-6">
+            <div className="text-center mt-8">
               <Button
                 onClick={() => setUserType(null)}
-                variant="outline"
-                className="bg-black text-white border-gray-400 hover:bg-gray-900 hover:text-white"
+                className="btn-outline"
               >
-                Volver
+                ← Volver al inicio
               </Button>
+            </div>
+          )}
+
+          {/* Features Section */}
+          {!userType && (
+            <div className="mt-20">
+              <h3 className="text-3xl font-bold text-white text-center mb-12">
+                ¿Por qué elegir EDHEX?
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <Card className="glass-card p-6 text-center card-hover">
+                  <Shield className="w-12 h-12 text-purple-300 mb-4 mx-auto" />
+                  <h4 className="text-white font-semibold text-xl mb-3">Seguridad Total</h4>
+                  <p className="text-white/70">Códigos únicos imposibles de duplicar con tecnología blockchain</p>
+                </Card>
+                
+                <Card className="glass-card p-6 text-center card-hover">
+                  <Scan className="w-12 h-12 text-purple-300 mb-4 mx-auto" />
+                  <h4 className="text-white font-semibold text-xl mb-3">Validación Rápida</h4>
+                  <p className="text-white/70">Escaneo QR instantáneo con verificación en tiempo real</p>
+                </Card>
+                
+                <Card className="glass-card p-6 text-center card-hover">
+                  <Ticket className="w-12 h-12 text-purple-300 mb-4 mx-auto" />
+                  <h4 className="text-white font-semibold text-xl mb-3">Fácil de Usar</h4>
+                  <p className="text-white/70">Interfaz intuitiva para generar y gestionar entradas</p>
+                </Card>
+              </div>
             </div>
           )}
         </div>
@@ -171,7 +248,7 @@ const Index = () => {
   if (userType === 'student') {
     return (
       <div className="min-h-screen p-4 md:p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <TicketGenerator 
             student={currentUser}
             onTicketGenerated={addTicket}
@@ -186,7 +263,7 @@ const Index = () => {
   if (userType === 'validator') {
     return (
       <div className="min-h-screen p-4 md:p-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <TicketValidator 
             validator={currentUser}
             tickets={tickets}
@@ -201,40 +278,56 @@ const Index = () => {
   // Interfaz administrativa (por defecto)
   return (
     <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="glass-card rounded-3xl p-8 mb-8 animate-float">
-            <GraduationCap className="w-16 h-16 mx-auto mb-4 text-yellow-400" />
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-              EDHEX ENTRADAS
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                Graduación Digital
-              </span>
-            </h1>
-            <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
-              Panel administrativo del sistema de entradas 🎓✨
-            </p>
+        <div className="text-center mb-16">
+          <div className="glass-card rounded-3xl p-12 mb-8 animate-float relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="logo-container mb-6">
+                <img 
+                  src="/image.png" 
+                  alt="EDHEX Logo" 
+                  className="w-20 h-20 mx-auto logo-glow"
+                />
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                EDHEX
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-white text-3xl md:text-5xl mt-2">
+                  Panel Administrativo
+                </span>
+              </h1>
+              
+              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto">
+                Gestión completa del sistema de entradas digitales 🎓✨
+              </p>
+            </div>
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="glass-card p-6 hover:scale-105 transition-transform duration-300">
-              <Shield className="w-8 h-8 text-blue-400 mb-2 mx-auto" />
-              <h3 className="text-white font-semibold text-lg">Seguridad Total</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <Card className="glass-card p-8 card-hover text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-white font-semibold text-xl mb-2">Seguridad Total</h3>
               <p className="text-white/70">Códigos únicos verificables</p>
             </Card>
             
-            <Card className="glass-card p-6 hover:scale-105 transition-transform duration-300">
-              <Ticket className="w-8 h-8 text-yellow-400 mb-2 mx-auto" />
-              <h3 className="text-white font-semibold text-lg">Entradas Generadas</h3>
-              <p className="text-white/70 text-2xl font-bold">{tickets.length}</p>
+            <Card className="glass-card p-8 card-hover text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                <Ticket className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-white font-semibold text-xl mb-2">Entradas Generadas</h3>
+              <p className="text-white/70 text-3xl font-bold">{tickets.length}</p>
             </Card>
             
-            <Card className="glass-card p-6 hover:scale-105 transition-transform duration-300">
-              <Scan className="w-8 h-8 text-green-400 mb-2 mx-auto" />
-              <h3 className="text-white font-semibold text-lg">Validadas</h3>
-              <p className="text-white/70 text-2xl font-bold">
+            <Card className="glass-card p-8 card-hover text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-purple-600 flex items-center justify-center">
+                <Scan className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-white font-semibold text-xl mb-2">Validadas</h3>
+              <p className="text-white/70 text-3xl font-bold">
                 {tickets.filter(t => t.used).length}
               </p>
             </Card>
@@ -244,12 +337,12 @@ const Index = () => {
         {/* Main Content */}
         <Card className="glass-card">
           <Tabs defaultValue="list" className="w-full">
-            <TabsList className="grid w-full grid-cols-1 bg-white/10 rounded-xl p-1">
+            <TabsList className="grid w-full grid-cols-1 bg-white/10 rounded-xl p-1 mb-6">
               <TabsTrigger 
                 value="list" 
-                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:to-orange-500 data-[state=active]:text-white rounded-lg"
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-400 data-[state=active]:text-white rounded-lg text-lg py-3"
               >
-                Lista de Entradas
+                📋 Lista de Entradas
               </TabsTrigger>
             </TabsList>
             

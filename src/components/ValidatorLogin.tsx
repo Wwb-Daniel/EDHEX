@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Shield, Scan } from "lucide-react";
+import { Shield, Scan, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -64,48 +63,67 @@ const ValidatorLogin = ({ onLogin }: ValidatorLoginProps) => {
   };
 
   return (
-    <Card className="glass-card p-8 max-w-md mx-auto">
-      <div className="text-center mb-6">
-        <Shield className="w-12 h-12 mx-auto mb-4 text-blue-400" />
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Acceso de Validador
-        </h2>
-        <p className="text-white/70">
-          Ingresa tu código para validar entradas
-        </p>
+    <Card className="glass-card p-8 max-w-md mx-auto relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-24 h-24 opacity-10">
+        <Shield className="w-full h-full text-white animate-pulse-slow" />
       </div>
-
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="code" className="text-white font-medium">
-            Código de Validador
-          </Label>
-          <div className="relative">
-            <Scan className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50" />
-            <Input
-              id="code"
-              value={validatorCode}
-              onChange={(e) => setValidatorCode(e.target.value.toUpperCase())}
-              placeholder="VAL001"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 pl-10 font-mono"
-              maxLength={6}
-            />
+      
+      <div className="relative z-10">
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center shadow-xl">
+            <Shield className="w-8 h-8 text-white" />
           </div>
+          <h2 className="text-3xl font-bold text-white mb-3">
+            Acceso de Validador
+          </h2>
+          <p className="text-white/80 text-lg">
+            Ingresa tu código para validar entradas
+          </p>
         </div>
 
-        <Button
-          onClick={handleLogin}
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold"
-        >
-          {loading ? "Verificando..." : "Acceder"}
-        </Button>
-      </div>
+        <div className="space-y-6">
+          <div>
+            <Label htmlFor="code" className="text-white font-medium text-lg mb-2 block">
+              Código de Validador
+            </Label>
+            <div className="relative">
+              <Scan className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60" />
+              <Input
+                id="code"
+                value={validatorCode}
+                onChange={(e) => setValidatorCode(e.target.value.toUpperCase())}
+                placeholder="VAL001"
+                className="input-primary pl-12 h-12 font-mono text-lg text-center"
+                maxLength={6}
+              />
+            </div>
+          </div>
 
-      <div className="mt-6 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
-        <p className="text-blue-300 text-sm text-center">
-          Códigos disponibles: VAL001, VAL002, VAL003, VAL004, VAL005
-        </p>
+          <Button
+            onClick={handleLogin}
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg"
+          >
+            <Lock className="w-5 h-5 mr-2" />
+            {loading ? "Verificando..." : "Acceder"}
+          </Button>
+        </div>
+
+        {/* Available codes info */}
+        <div className="mt-8 p-6 bg-blue-500/10 rounded-xl border border-blue-400/20">
+          <h4 className="text-blue-200 font-semibold mb-3 text-center">🔑 Códigos Disponibles</h4>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            {['VAL001', 'VAL002', 'VAL003', 'VAL004', 'VAL005'].map((code) => (
+              <div key={code} className="bg-blue-400/20 rounded-lg py-2 px-3">
+                <span className="text-blue-200 font-mono text-sm">{code}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-blue-300 text-sm text-center mt-3">
+            Usa cualquiera de estos códigos para acceder
+          </p>
+        </div>
       </div>
     </Card>
   );
