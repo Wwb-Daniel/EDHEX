@@ -185,63 +185,6 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Camera Scanner Styles */
-  .scanner-overlay {
-    position: relative;
-    background: linear-gradient(135deg, rgba(123, 44, 191, 0.1) 0%, rgba(157, 78, 221, 0.1) 100%);
-    border: 2px solid #7B2CBF;
-    border-radius: 24px;
-    overflow: hidden;
-  }
-
-  .scanner-overlay::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      45deg,
-      transparent 30%,
-      rgba(123, 44, 191, 0.1) 50%,
-      transparent 70%
-    );
-    animation: scan-line 2s linear infinite;
-    z-index: 1;
-  }
-
-  @keyframes scan-line {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-
-  .scanner-corners::before,
-  .scanner-corners::after {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    border: 3px solid #7B2CBF;
-    z-index: 2;
-  }
-
-  .scanner-corners::before {
-    top: 10px;
-    left: 10px;
-    border-right: none;
-    border-bottom: none;
-    border-top-left-radius: 8px;
-  }
-
-  .scanner-corners::after {
-    bottom: 10px;
-    right: 10px;
-    border-left: none;
-    border-top: none;
-    border-bottom-right-radius: 8px;
-  }
-
   /* Responsive text sizes */
   @media (max-width: 768px) {
     .text-4xl { font-size: 2rem; }
@@ -311,5 +254,78 @@
   @keyframes rotate {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  /* Better spacing for form icons */
+  .form-icon-spacing {
+    padding-left: 3rem;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    .glass-card {
+      margin: 0.5rem;
+      padding: 1.5rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-outline {
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+    }
+    
+    .input-primary {
+      padding: 0.875rem 1rem;
+      padding-left: 3rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* QR Scanner improvements */
+  .qr-scanner-container {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+    border: 2px solid rgba(123, 44, 191, 0.5);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .qr-scanner-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Ensure QR scanner video fills container properly */
+  #qr-reader video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0.75rem;
+  }
+
+  #qr-reader {
+    background: #000;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  /* Hide QR scanner default UI elements */
+  #qr-reader__dashboard_section {
+    display: none !important;
+  }
+
+  #qr-reader__header_message {
+    display: none !important;
+  }
+
+  #qr-reader__camera_selection {
+    display: none !important;
+  }
+
+  #qr-reader__scan_region {
+    border: none !important;
   }
 }

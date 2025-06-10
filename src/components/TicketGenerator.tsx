@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { generateTicketCode } from "@/utils/ticketUtils";
-import { Plus, Sparkles, LogOut } from "lucide-react";
+import { Plus, Sparkles, LogOut, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import TicketPreview from "./TicketPreview";
@@ -138,36 +138,36 @@ const TicketGenerator = ({ student, onTicketGenerated, onLogout }: TicketGenerat
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="text-center flex-1">
-          <h2 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="text-center sm:text-left flex-1">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2 flex items-center justify-center sm:justify-start gap-2">
             <Sparkles className="w-6 h-6 text-yellow-400" />
             Generar Nueva Entrada
           </h2>
-          <p className="text-white/70">
+          <p className="text-white/70 text-sm sm:text-base">
             Bienvenido {student.name} - Entradas: {student.tickets_generated}/{student.max_tickets}
           </p>
         </div>
         <Button
           onClick={onLogout}
           variant="outline"
-          className="bg-black text-white border-gray-400 hover:bg-gray-900 hover:text-white"
+          className="bg-white/10 text-white border-white/30 hover:bg-white/20 hover:text-white transition-all duration-300 w-full sm:w-auto"
         >
           <LogOut className="w-4 h-4 mr-2" />
           Salir
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Form */}
-        <Card className="glass-card p-6">
-          <div className="space-y-4">
+        <Card className="glass-card p-4 sm:p-6">
+          <div className="space-y-6">
             <div>
-              <Label htmlFor="type" className="text-white font-medium">
+              <Label htmlFor="type" className="text-white font-medium text-sm sm:text-base mb-3 block">
                 Tipo de Entrada
               </Label>
               <Select value={ticketType} onValueChange={setTicketType}>
-                <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                <SelectTrigger className="bg-white/10 border-white/20 text-white h-12 text-base">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -179,7 +179,7 @@ const TicketGenerator = ({ student, onTicketGenerated, onLogout }: TicketGenerat
 
             {ticketType === "familiar" && (
               <div>
-                <Label htmlFor="guest" className="text-white font-medium">
+                <Label htmlFor="guest" className="text-white font-medium text-sm sm:text-base mb-3 block">
                   Nombre del Familiar/Invitado
                 </Label>
                 <Input
@@ -187,13 +187,13 @@ const TicketGenerator = ({ student, onTicketGenerated, onLogout }: TicketGenerat
                   value={guestName}
                   onChange={(e) => setGuestName(e.target.value)}
                   placeholder="Ej: Juan González (Papá)"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 text-base"
                 />
               </div>
             )}
 
             <div>
-              <Label htmlFor="notes" className="text-white font-medium">
+              <Label htmlFor="notes" className="text-white font-medium text-sm sm:text-base mb-3 block">
                 Notas Especiales (Opcional)
               </Label>
               <Textarea
@@ -201,34 +201,34 @@ const TicketGenerator = ({ student, onTicketGenerated, onLogout }: TicketGenerat
                 value={specialNotes}
                 onChange={(e) => setSpecialNotes(e.target.value)}
                 placeholder="Ej: Silla de ruedas, mesa especial, etc."
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[100px] text-base resize-none"
               />
             </div>
 
-            <div className="flex gap-3 pt-4">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button
                 onClick={handleGenerateTicket}
                 disabled={loading || !canGenerateMoreTickets}
-                className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-5 h-5 mr-2" />
                 {loading ? "Generando..." : "Generar Entrada"}
               </Button>
               
               {generatedTicket && (
                 <Button
                   onClick={resetForm}
-                  variant="outline"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 hover:border-white/50 h-12 text-base font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                 >
+                  <RefreshCw className="w-4 h-4 mr-2" />
                   Nueva Entrada
                 </Button>
               )}
             </div>
 
             {!canGenerateMoreTickets && (
-              <div className="p-4 bg-red-500/20 rounded-lg border border-red-500/30">
-                <p className="text-red-300 text-center font-medium">
+              <div className="p-4 bg-red-500/20 rounded-xl border border-red-500/30">
+                <p className="text-red-300 text-center font-medium text-sm sm:text-base">
                   Has alcanzado el límite de {student.max_tickets} entradas
                 </p>
               </div>
@@ -241,10 +241,10 @@ const TicketGenerator = ({ student, onTicketGenerated, onLogout }: TicketGenerat
           {generatedTicket ? (
             <TicketPreview ticket={generatedTicket} />
           ) : (
-            <Card className="glass-card p-8 text-center h-full flex items-center justify-center">
+            <Card className="glass-card p-6 sm:p-8 text-center h-full flex items-center justify-center min-h-[400px]">
               <div className="text-white/50">
-                <Sparkles className="w-12 h-12 mx-auto mb-4" />
-                <p>La vista previa de tu entrada aparecerá aquí</p>
+                <Sparkles className="w-12 h-12 mx-auto mb-4 animate-pulse" />
+                <p className="text-base sm:text-lg">La vista previa de tu entrada aparecerá aquí</p>
               </div>
             </Card>
           )}

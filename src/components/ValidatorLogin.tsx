@@ -63,28 +63,28 @@ const ValidatorLogin = ({ onLogin }: ValidatorLoginProps) => {
   };
 
   return (
-    <Card className="glass-card p-8 max-w-md mx-auto relative overflow-hidden">
+    <Card className="glass-card p-6 sm:p-8 max-w-md mx-auto relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 left-0 w-24 h-24 opacity-10">
+      <div className="absolute top-0 left-0 w-20 sm:w-24 h-20 sm:h-24 opacity-10">
         <Shield className="w-full h-full text-white animate-pulse-slow" />
       </div>
       
       <div className="relative z-10">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center shadow-xl">
-            <Shield className="w-8 h-8 text-white" />
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center shadow-xl">
+            <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
             Acceso de Validador
           </h2>
-          <p className="text-white/80 text-lg">
+          <p className="text-white/80 text-base sm:text-lg">
             Ingresa tu código para validar entradas
           </p>
         </div>
 
         <div className="space-y-6">
           <div>
-            <Label htmlFor="code" className="text-white font-medium text-lg mb-2 block">
+            <Label htmlFor="code" className="text-white font-medium text-base sm:text-lg mb-3 block">
               Código de Validador
             </Label>
             <div className="relative">
@@ -94,7 +94,7 @@ const ValidatorLogin = ({ onLogin }: ValidatorLoginProps) => {
                 value={validatorCode}
                 onChange={(e) => setValidatorCode(e.target.value.toUpperCase())}
                 placeholder="VAL001"
-                className="input-primary pl-12 h-12 font-mono text-lg text-center"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 pl-12 h-12 font-mono text-base text-center"
                 maxLength={6}
               />
             </div>
@@ -103,7 +103,7 @@ const ValidatorLogin = ({ onLogin }: ValidatorLoginProps) => {
           <Button
             onClick={handleLogin}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-base sm:text-lg"
           >
             <Lock className="w-5 h-5 mr-2" />
             {loading ? "Verificando..." : "Acceder"}
@@ -111,16 +111,16 @@ const ValidatorLogin = ({ onLogin }: ValidatorLoginProps) => {
         </div>
 
         {/* Available codes info */}
-        <div className="mt-8 p-6 bg-blue-500/10 rounded-xl border border-blue-400/20">
-          <h4 className="text-blue-200 font-semibold mb-3 text-center">🔑 Códigos Disponibles</h4>
-          <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-blue-500/10 rounded-xl border border-blue-400/20">
+          <h4 className="text-blue-200 font-semibold mb-3 text-center text-sm sm:text-base">🔑 Códigos Disponibles</h4>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-center">
             {['VAL001', 'VAL002', 'VAL003', 'VAL004', 'VAL005'].map((code) => (
-              <div key={code} className="bg-blue-400/20 rounded-lg py-2 px-3">
-                <span className="text-blue-200 font-mono text-sm">{code}</span>
+              <div key={code} className="bg-blue-400/20 rounded-lg py-2 px-2 sm:px-3">
+                <span className="text-blue-200 font-mono text-xs sm:text-sm">{code}</span>
               </div>
             ))}
           </div>
-          <p className="text-blue-300 text-sm text-center mt-3">
+          <p className="text-blue-300 text-xs sm:text-sm text-center mt-3">
             Usa cualquiera de estos códigos para acceder
           </p>
         </div>
